@@ -69,3 +69,27 @@ func (c Candidate) Fliter1(on uint64) bool {
 	return c.Bits&on == on
 
 }
+
+type BitMap struct {
+	Table uint64
+}
+
+func CreateBitMap(min int, arr []int) BitMap {
+	var b BitMap
+	for _, v := range arr {
+		b.Table = SetBit1(b.Table, v-min+1)
+	}
+	return b
+}
+
+func IntersectionOfBitMap(b1, b2 BitMap, min int) []int {
+	var res = make([]int, 0, 100)
+	intersec := b1.Table & b2.Table
+	for i := 1; i <= 64; i++ {
+		if IsBit1(intersec, i) {
+			res = append(res, i+min-1)
+		}
+	}
+	return res
+
+}

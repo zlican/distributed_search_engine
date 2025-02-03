@@ -18,3 +18,13 @@ func TestBits(t *testing.T) {
 	fmt.Println(utils.CountBit1(n))
 	fmt.Printf("%064b\n", n)
 }
+
+func TestInterset(t *testing.T) {
+	min := 10
+	var arr1 = []int{10, 15, 16, 19, 22}
+	var arr2 = []int{11, 15, 16, 17, 20, 22}
+	arr1BitMap := utils.CreateBitMap(min, arr1)
+	arr2BitMap := utils.CreateBitMap(min, arr2)
+	res := utils.IntersectionOfBitMap(arr1BitMap, arr2BitMap, min)
+	fmt.Println(res)
+}
