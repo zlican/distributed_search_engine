@@ -3,6 +3,7 @@ package test
 import (
 	reverseindex "engine/internal/reverse_index"
 	"engine/types"
+	"fmt"
 	"testing"
 )
 
@@ -23,4 +24,10 @@ func TestSkipReverseIndexDelete(t *testing.T) {
 	reverseIndex := reverseindex.NewSkipListReverseIndex(3)
 	reverseIndex.Add(doc)
 	reverseIndex.Delete(doc.IntId, doc.Keywords[1])
+}
+
+func TestMine(t *testing.T) {
+	var str = "陈子陵"
+	fmt.Println([]byte(str))
+
 }
