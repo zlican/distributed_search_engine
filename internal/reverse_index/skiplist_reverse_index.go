@@ -67,3 +67,71 @@ func (indexer *SkipListReverseIndex) Delete(IntId uint64, keyword *types.Keyword
 	}
 	lock.Unlock()
 }
+
+func (indexer SkipListReverseIndex) FilterByBits(bits uint64, onFlag uint64, offFlag uint64, orFlags []uint64) bool {
+	//必须满足onFlag
+	if bits&onFlag != onFlag {
+		return false
+	}
+	//必须不满足offFlag
+	if bits&offFlag != 0 {
+		return false
+	}
+
+	//必须满足orFlags中的任意一个
+	for _, orFlag := range orFlags {
+		if orFlag > 0 && bits&orFlag <= 0 {
+			return false
+		}
+	}
+
+	return true
+} //按照bits特征进行过滤
+
+func (indexer SkipListReverseIndex) search(q *types.TermQuery, onFlag uint64, offFlag uint64, orFlags []uint64) *skiplist.SkipList {
+	if q.Keyword != "" {
+		Keyword := q.Keyword
+		if value, exists := indexer.table.Get(Keyword); exists {
+			result := skiplist.New(skiplist.Uint64)
+			list := value.(*skiplist.SkipList)
+			node := list.Front()
+			for node != nil {
+				intId := node.Key().(uint64)
+				skv, _ := node.Value.(MixValue)
+				flag := skv.BitsFeature
+				if intId > 0 && indexer.FilterByBits(flag, onFlag, offFlag, orFlags) {
+					result.Set(intId, skv)
+				}
+				node = node.Next()
+			}
+			return result
+		}
+	} else if len(q.Must) > 0 {
+		results := make([]*skiplist.SkipList, 0, len(q.Must))
+		for _, q := range q.Must {
+			results = append(results, indexer.search(q, onFlag, offFlag, orFlags)) //递归实现
+		}
+		return utils.SkipIntersection(results...) //&是多个跳表求交集
+	} else if len(q.Should) > 0 {
+		results := make([]*skiplist.SkipList, 0, len(q.Should))
+		for _, q := range q.Should {
+			results = append(results, indexer.search(q, onFlag, offFlag, orFlags))
+		}
+		return utils.SkipUnion(results...) //|是多个跳表求并集
+	}
+	return nil
+} //内部search
+
+func (indexer SkipListReverseIndex) Search(q *types.TermQuery, onFlag uint64, offFlag uint64, orFlags []uint64) []string {
+	result := indexer.search(q, onFlag, offFlag, orFlags)
+	if result == nil {
+		return nil
+	}
+	ids := make([]string, 0, result.Len())
+	node := result.Front()
+	for node != nil {
+		ids = append(ids, node.Value.(MixValue).Id)
+		node = node.Next()
+	}
+	return ids
+} //外部search

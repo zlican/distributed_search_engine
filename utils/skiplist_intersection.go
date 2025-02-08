@@ -53,3 +53,23 @@ func SkipIntersection(lists ...*skiplist.SkipList) *skiplist.SkipList {
 		}
 	}
 }
+
+func SkipUnion(lists ...*skiplist.SkipList) *skiplist.SkipList {
+	if len(lists) == 0 {
+		return nil
+	}
+	if len(lists) == 1 {
+		return lists[0]
+	}
+
+	result := skiplist.New(skiplist.Uint64)
+
+	for _, list := range lists {
+		node := list.Front()
+		for node != nil {
+			result.Set(node.Key(), node.Value)
+			node = node.Next()
+		}
+	}
+	return result
+}
