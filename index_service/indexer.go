@@ -39,7 +39,7 @@ func (indexer *Indexer) AddDoc(doc types.Document) (int, error) {
 		return 0, nil
 	}
 
-	indexer.DeleteDoc(docId)
+	indexer.DeleteDoc(docId) //删除旧的doc
 	doc.IntId = atomic.AddUint64(&indexer.maxIntId, 1)
 
 	var value bytes.Buffer
