@@ -52,4 +52,4 @@ func GetKvDb(dbtype int, path string) (IKeyValueDB, error) {
 	err = db.Open()
 	return db, err
 
-}
+} //工厂模式初始化

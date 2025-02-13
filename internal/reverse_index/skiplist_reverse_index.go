@@ -21,17 +21,17 @@ type MixValue struct {
 	BitsFeature uint64
 }
 
-func NewSkipListReverseIndex(DocNumEstimate int) *SkipListReverseIndex { //创建一个倒排索引对象
+func NewSkipListReverseIndex(DocNumEstimate int) *SkipListReverseIndex {
 	indexer := new(SkipListReverseIndex)
 	indexer.table = utils.NewMyCurrencyMap(runtime.NumCPU(), DocNumEstimate)
 	indexer.locks = make([]sync.RWMutex, 1000)
 	return indexer
-}
+} //创建一个倒排索引对象
 
-func (indexer *SkipListReverseIndex) getLock(key string) *sync.RWMutex { //使用固定数量的锁
+func (indexer *SkipListReverseIndex) getLock(key string) *sync.RWMutex {
 	n := int(farmhash.Hash32WithSeed([]byte(key), 0))
 	return &indexer.locks[n%len(indexer.locks)]
-}
+} //使用固定数量的锁
 
 func (indexer *SkipListReverseIndex) Add(doc types.Document) {
 	mixValue := MixValue{Id: doc.Id, BitsFeature: doc.BitsFeature}
@@ -99,7 +99,7 @@ func (indexer SkipListReverseIndex) search(q *types.TermQuery, onFlag uint64, of
 				intId := node.Key().(uint64)
 				skv, _ := node.Value.(MixValue)
 				flag := skv.BitsFeature
-				if intId > 0 && indexer.FilterByBits(flag, onFlag, offFlag, orFlags) {
+				if intId > 0 && indexer.FilterByBits(flag, onFlag, offFlag, orFlags) { //过滤
 					result.Set(intId, skv)
 				}
 				node = node.Next()
