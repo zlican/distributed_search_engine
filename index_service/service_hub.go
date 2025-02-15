@@ -13,9 +13,6 @@ import (
 
 const (
 	SERVICE_ROOT_PATH = "/engine" //区分不同的业务
-	SERVICE_NAME      = "index_service"
-	SERVICE_ADDR      = "127.0.0.1:8080"
-	SERVICE_HEARTBEAT = 30
 )
 
 // 服务注册中心
@@ -30,7 +27,6 @@ var (
 	serviceHub *ServiceHub
 	hubOnce    sync.Once
 )
-var etcdServers = []string{"localhost:2379", "localhost:22379", "localhost:32379"}
 
 // 启动etcd.Client
 func GetServiceHub(etcdServers []string, heartbeatFrequency int64) *ServiceHub {
@@ -93,27 +89,27 @@ func (hub *ServiceHub) Unregist(serviceName string, endpoint string, leaseID etc
 }
 
 // 获取服务列表(核心Client.Get)
-func (hub *ServiceHub) GetServiceEndpoints(serviceName string) ([]string, error) {
+func (hub *ServiceHub) GetServiceEndpoints(serviceName string) []string {
 	ctx := context.Background()
 	prefix := strings.TrimRight(SERVICE_ROOT_PATH, "/") + "/" + serviceName + "/"
 	if resp, err := hub.client.Get(ctx, prefix, etcdv3.WithPrefix()); err != nil { //前缀
-		return nil, err
+		return nil
 	} else {
 		endpoints := make([]string, 0)
 		for _, kv := range resp.Kvs {
-			path := strings.Split(string(kv.Key), "/")
+			path := strings.Split(string(kv.Key), "/")       //key := strings.TrimRight(SERVICE_ROOT_PATH, "/") + "/" + serviceName + "/" + endpoint
 			endpoints = append(endpoints, path[len(path)-1]) //拿到服务的ip列表
 		}
-		return endpoints, nil
+		return endpoints
 	}
 }
 
 // ServiceHub实现负载均衡
 // 策略模式：根据不同的负载均衡策略，选择不同的负载均衡策略（函数）
-func (hub *ServiceHub) GetServiceEndpoint(serviceName string) (string, error) {
-	if endpoints, err := hub.GetServiceEndpoints(serviceName); err != nil {
-		return "", err
+func (hub *ServiceHub) GetServiceEndpoint(serviceName string) string {
+	if endpoints := hub.GetServiceEndpoints(serviceName); len(endpoints) > 0 {
+		return hub.loadBalancer.Take(endpoints)
 	} else {
-		return hub.loadBalancer.Take(endpoints), nil
+		return ""
 	}
 }
