@@ -48,4 +48,5 @@ func TestHubProxy(t *testing.T) {
 		}
 	}
 	fmt.Printf("限流测试：成功请求数 %d/%d\n", successCount, qps+5)
+	time.Sleep(1 * time.Second)
 }

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package types;
+
+option go_package = "engine/types";
+
+// TermQuery 表示一个词条查询
+// 支持AND(Must)和OR(Should)逻辑组合
+message TermQuery {
+    // Should表示OR逻辑，多个TermQuery之间是"或"的关系
+    repeated TermQuery should = 1;
+    
+    // Must表示AND逻辑，多个TermQuery之间是"与"的关系
+    repeated TermQuery must = 2;
+    
+    // Keyword表示叶子节点的具体查询词
+    string keyword = 3;
+}
+
+//protoc --go_out=. --go_opt=paths=source_relative --go_opt=Mterm_query.proto=engine/types ./types/term_query.proto

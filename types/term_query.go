@@ -2,12 +2,6 @@ package types
 
 import "strings"
 
-type TermQuery struct {
-	Should  []*TermQuery //多个TermQuery与
-	Must    []*TermQuery //多个TermQuery或
-	Keyword string       //叶子节点本身TermQuery
-}
-
 func Be(str string) *TermQuery {
 	return &TermQuery{Keyword: str}
 }

@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 )
 
-// 将正排和倒排结合起来
+// 单机模式：将正排和倒排结合起来
 type Indexer struct {
 	forwardIndex kvdb.IKeyValueDB
 	reverseIndex reverseindex.IReverseIndexer
@@ -23,8 +23,8 @@ func (indexer *Indexer) Init(DocNumEstimate int, dbtype int, DataDir string) err
 	if err != nil {
 		return err
 	}
-	indexer.forwardIndex = db
-	indexer.reverseIndex = reverseindex.NewSkipListReverseIndex(DocNumEstimate)
+	indexer.forwardIndex = db                                                   //打开正排文件
+	indexer.reverseIndex = reverseindex.NewSkipListReverseIndex(DocNumEstimate) //创建倒排索引，但是并未加载正排缓存数据
 	return nil
 }
 

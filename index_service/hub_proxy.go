@@ -77,11 +77,11 @@ func (proxy *HubProxy) GetServiceEndpoints(serviceName string) []string {
 func (proxy *HubProxy) watchEndpointsOfService(serviceName string) {
 	if _, exists := proxy.ServiceHub.watched.LoadOrStore(serviceName, true); exists {
 		return
-	}
+	} //当第一次监听时，往watched中添加serviceName，值为true，当第二次监听时，已存在，不进行监听
 	ctx := context.Background()
 	prefix := strings.TrimRight(SERVICE_ROOT_PATH, "/") + "/" + serviceName + "/"
 	ch := proxy.ServiceHub.client.Watch(ctx, prefix, etcdv3.WithPrefix()) //在etcd上根据前缀进行监听，没一个修改都会放进ch
-	fmt.Println("监听服务变化")
+	fmt.Println("开始监听", serviceName)
 	go func() {
 		for wresp := range ch {
 			for _, event := range wresp.Events {
@@ -89,6 +89,7 @@ func (proxy *HubProxy) watchEndpointsOfService(serviceName string) {
 				if len(path) > 2 {
 					serviceName := path[len(path)-2] //获得变化事件的serviceName
 					endpoints := proxy.ServiceHub.GetServiceEndpoints(serviceName)
+					fmt.Println("监听服务变化", serviceName, event.Type, endpoints)
 					if len(endpoints) > 0 {
 						proxy.endpointCache.Store(serviceName, endpoints)
 					} else {

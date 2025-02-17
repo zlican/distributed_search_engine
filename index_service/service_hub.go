@@ -83,7 +83,7 @@ func (hub *ServiceHub) Unregist(serviceName string, endpoint string, leaseID etc
 	if _, err := hub.client.Delete(ctx, key); err != nil {
 		return err
 	} else {
-		fmt.Println("注销成功", serviceName)
+		fmt.Println("注销成功", serviceName, endpoint)
 		return nil
 	}
 }
