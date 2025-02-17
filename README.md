@@ -62,8 +62,8 @@
 ### 安装
 
 ```bash
-git clone https://github.com/yourusername/distributed-search-engine.git
-cd distributed-search-engine
+git clone https://github.com/zlican/engine.git
+cd engine
 go mod download
 ```
 
