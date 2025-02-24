@@ -3,12 +3,14 @@ package indexservice
 import (
 	"bytes"
 	"encoding/gob"
-	"engine/internal/kvdb"
-	reverseindex "engine/internal/reverse_index"
-	"engine/types"
 	"fmt"
 	"strings"
 	"sync/atomic"
+
+	reverseindex "github.com/zlican/engine/internal/reverse_index"
+	"github.com/zlican/engine/types"
+
+	"github.com/zlican/engine/internal/kvdb"
 )
 
 // 单机模式：将正排和倒排结合起来

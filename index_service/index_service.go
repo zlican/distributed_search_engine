@@ -2,11 +2,12 @@ package indexservice
 
 import (
 	"context"
-	types "engine/types"
 	"fmt"
 	"net"
 	"strconv"
 	"time"
+
+	types "github.com/zlican/engine/types"
 
 	"google.golang.org/grpc"
 )

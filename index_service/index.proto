@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package indexservice;
 
-option go_package = "engine/indexservice";
+option go_package = "github.com/zlican/engine/indexservice";
 
 import "doc.proto";
 import "term_query.proto";

@@ -1,11 +1,12 @@
 package reverseindex
 
 import (
-	"engine/types"
-	"engine/utils"
 	"fmt"
 	"runtime"
 	"sync"
+
+	"github.com/zlican/engine/types"
+	"github.com/zlican/engine/utils"
 
 	"github.com/huandu/skiplist"
 	farmhash "github.com/leemcloughlin/gofarmhash"

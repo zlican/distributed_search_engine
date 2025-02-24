@@ -1,11 +1,12 @@
 package test
 
 import (
-	"engine/utils"
 	"fmt"
 	"strconv"
 	"sync"
 	"testing"
+
+	"github.com/zlican/engine/utils"
 )
 
 func TestMapIteractor(t *testing.T) {

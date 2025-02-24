@@ -1,9 +1,10 @@
 package test
 
 import (
-	"engine/types"
 	"fmt"
 	"testing"
+
+	"github.com/zlican/engine/types"
 )
 
 func TestTermQuery(t *testing.T) {

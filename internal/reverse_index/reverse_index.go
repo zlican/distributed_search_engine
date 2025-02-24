@@ -1,6 +1,6 @@
 package reverseindex
 
-import "engine/types"
+import "github.com/zlican/engine/types"
 
 type IReverseIndexer interface {
 	Add(doc types.Document)

@@ -1,10 +1,11 @@
 package test
 
 import (
-	"engine/types"
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/zlican/engine/types"
 )
 
 // ((A|B|C)&E|(D|(A&B))

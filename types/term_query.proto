@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package types;
 
-option go_package = "engine/types";
+option go_package = "github.com/zlican/engine/types";
 
 // TermQuery 表示一个词条查询
 // 支持AND(Must)和OR(Should)逻辑组合

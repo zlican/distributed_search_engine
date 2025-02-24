@@ -1,10 +1,11 @@
 package test
 
 import (
-	reverseindex "engine/internal/reverse_index"
-	"engine/types"
 	"fmt"
 	"testing"
+
+	reverseindex "github.com/zlican/engine/internal/reverse_index"
+	"github.com/zlican/engine/types"
 )
 
 func TestSkipReverseIndexAdd(t *testing.T) {

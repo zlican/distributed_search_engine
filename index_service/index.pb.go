@@ -7,7 +7,7 @@
 package indexservice
 
 import (
-	types "engine/types"
+	types "github.com/zlican/engine/types"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

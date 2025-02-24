@@ -1,9 +1,10 @@
 package test
 
 import (
-	"engine/utils"
 	"fmt"
 	"testing"
+
+	"github.com/zlican/engine/utils"
 
 	"github.com/huandu/skiplist"
 )

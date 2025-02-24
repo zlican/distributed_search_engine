@@ -1,6 +1,6 @@
 package indexservice
 
-import types "engine/types"
+import types "github.com/zlican/engine/types"
 
 // 单机与分布式公用的抽象接口
 type IIndexer interface {

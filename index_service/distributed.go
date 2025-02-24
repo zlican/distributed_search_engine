@@ -2,12 +2,13 @@ package indexservice
 
 import (
 	"context"
-	types "engine/types"
 	"errors"
 	"fmt"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	types "github.com/zlican/engine/types"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
@@ -81,7 +82,7 @@ func (sentinel *Sentinel) DeleteDoc(docId string) int {
 			conn := sentinel.GetGrpcConn(endpoint)
 			if conn != nil {
 				client := NewIndexServiceClient(conn)
-				affected, err := client.DeleteDoc(context.Background(), &docId)
+				affected, err := client.DeleteDoc(context.Background(), &DocID{DocID: docId})
 				if err != nil {
 					fmt.Println("delete doc failed, err:", err)
 				} else {

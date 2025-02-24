@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>分布式搜索引擎</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .left-panel, .right-panel {
+            flex: 1;
+        }
+        .panel {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .search-box, .add-doc-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            padding: 8px;
+            font-size: 14px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .document {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .keyword-item {
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>分布式搜索引擎</h1>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="panel">
+                <h2>添加文档</h2>
+                <div class="add-doc-form">
+                    <input type="text" id="docId" placeholder="文档ID">
+                    <input type="number" id="bitsFeature" placeholder="特征值">
+                    <div id="keywords">
+                        <div class="keyword-input">
+                            <input type="text" placeholder="字段" class="field">
+                            <input type="text" placeholder="关键词" class="word">
+                        </div>
+                    </div>
+                    <button onclick="addKeywordInput()">添加关键词</button>
+                    <button onclick="addDocument()">添加文档</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="panel">
+                <h2>搜索文档</h2>
+                <div class="search-box">
+                    <input type="text" id="searchField" placeholder="搜索字段 (例如: title, content, tag)">
+                    <input type="text" id="searchInput" placeholder="输入搜索关键词...">
+                    <input type="number" id="searchOnFlag" placeholder="OnFlag (可选)">
+                    <input type="number" id="searchOffFlag" placeholder="OffFlag (可选)">
+                    <button onclick="search()">搜索</button>
+                </div>
+                <div id="results" class="results">
+                    <!-- 搜索结果将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addKeywordInput() {
+            const keywordsDiv = document.getElementById('keywords');
+            const newKeywordDiv = document.createElement('div');
+            newKeywordDiv.className = 'keyword-input';
+            newKeywordDiv.innerHTML = `
+                <input type="text" placeholder="字段" class="field">
+                <input type="text" placeholder="关键词" class="word">
+                <button onclick="this.parentElement.remove()">删除</button>
+            `;
+            keywordsDiv.appendChild(newKeywordDiv);
+        }
+
+        async function addDocument() {
+            const docId = document.getElementById('docId').value;
+            const bitsFeature = parseInt(document.getElementById('bitsFeature').value) || 0;
+            
+            const keywordInputs = document.querySelectorAll('.keyword-input');
+            const keywords = Array.from(keywordInputs).map(div => ({
+                Field: div.querySelector('.field').value,
+                Word: div.querySelector('.word').value
+            })).filter(kw => kw.Field && kw.Word);
+
+            const doc = {
+                Id: docId,
+                BitsFeature: bitsFeature,
+                Keywords: keywords
+            };
+
+            try {
+                const response = await fetch('/api/documents', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(doc)
+                });
+
+                if (!response.ok) {
+                    throw new Error('添加文档失败');
+                }
+
+                alert('文档添加成功');
+                // 清空表单
+                document.getElementById('docId').value = '';
+                document.getElementById('bitsFeature').value = '';
+                document.getElementById('keywords').innerHTML = '';
+                addKeywordInput();
+            } catch (error) {
+                console.error('添加文档失败:', error);
+                alert('添加文档失败: ' + error.message);
+            }
+        }
+
+        async function search() {
+            const keyword = document.getElementById('searchInput').value;
+            const field = document.getElementById('searchField').value || 'content';  // 默认使用 content
+            const onFlag = parseInt(document.getElementById('searchOnFlag').value) || 0;
+            const offFlag = parseInt(document.getElementById('searchOffFlag').value) || 0;
+
+            if (!keyword) {
+                alert('请输入搜索关键词');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        keyword: keyword,
+                        field: field,
+                        onFlag: onFlag,
+                        offFlag: offFlag,
+                        orFlags: []
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('搜索结果:', data);
+                displayResults(data.documents);
+            } catch (error) {
+                console.error('搜索出错:', error);
+                alert('搜索失败，请重试');
+            }
+        }
+
+        function displayResults(documents) {
+            const resultsDiv = document.getElementById('results');
+            console.log('显示结果:', documents); // 添加日志以便调试
+            
+            if (!documents || documents.length === 0) {
+                resultsDiv.innerHTML = '<p>没有找到相关文档</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = documents.map(doc => `
+                <div class="document">
+                    <h3>文档ID: ${doc.Id}</h3>
+                    <p>特征值: ${doc.BitsFeature}</p>
+                    <div class="keyword-list">
+                        ${doc.Keywords.map(kw => `
+                            <span class="keyword-item">${kw.Field}:${kw.Word}</span>
+                        `).join('')}
+                    </div>
+                    <button onclick="deleteDocument('${doc.Id}')">删除文档</button>
+                </div>
+            `).join('');
+        }
+
+        async function deleteDocument(docId) {
+            if (!confirm(`确定要删除文档 ${docId} 吗？`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/documents/${docId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error('删除文档失败');
+                }
+
+                alert('文档删除成功');
+                // 刷新搜索结果
+                search();
+            } catch (error) {
+                console.error('删除文档失败:', error);
+                alert('删除文档失败: ' + error.message);
+            }
+        }
+
+        // 初始化页面时添加一个关键词输入框
+        addKeywordInput();
+    </script>
+</body>
+</html> 

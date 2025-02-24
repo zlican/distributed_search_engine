@@ -1,10 +1,11 @@
 package test
 
 import (
-	indexservice "engine/index_service"
 	"fmt"
 	"testing"
 	"time"
+
+	indexservice "github.com/zlican/engine/index_service"
 )
 
 func TestHubProxy(t *testing.T) {

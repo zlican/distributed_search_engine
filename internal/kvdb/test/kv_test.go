@@ -1,9 +1,10 @@
 package test
 
 import (
-	"engine/internal/kvdb"
 	"os"
 	"testing"
+
+	"github.com/zlican/engine/internal/kvdb"
 )
 
 func TestBolt(t *testing.T) {

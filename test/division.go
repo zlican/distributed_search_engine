@@ -1,9 +1,10 @@
 package test
 
 import (
-	"engine/utils"
 	"fmt"
 	"testing"
+
+	"github.com/zlican/engine/utils"
 )
 
 func TestDivision(t *testing.T) {
