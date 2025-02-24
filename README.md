@@ -1,5 +1,7 @@
 # 分布式搜索引擎 [API 文档](https://github.com/zlican/engine/wiki/API-%E6%96%87%E6%A1%A3)
 
+最新版本：v1.0.0
+
 这是一个基于 Go 语言实现的分布式搜索引擎，主要特点包括：
 
 ## 核心特性
