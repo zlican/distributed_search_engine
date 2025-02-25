@@ -1,0 +1,148 @@
+<svg width="1500" height="2500" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f9f9f9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f0f0;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 阴影效果 -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#00000033"/>
+    </filter>
+    
+    <!-- 箭头标记 -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+        markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    
+    <marker id="dashed-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+        markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#777"/>
+    </marker>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1500" height="2500" fill="url(#bg-gradient)" />
+  
+  <!-- 标题和副标题 -->
+  <text x="550" y="50" font-family="Arial" font-size="30" text-anchor="middle" font-weight="bold" fill="#333">分布式搜索引擎架构</text>
+  <text x="550" y="85" font-family="Arial" font-size="18" text-anchor="middle" fill="#666">高性能、可扩展的分布式全文检索系统</text>
+  
+  <!-- 系统分层背景 -->
+  <rect x="50" y="120" width="1000" height="130" rx="10" fill="#e3f2fd" fill-opacity="0.5" stroke="#bbdefb" stroke-width="1"/>
+  <text x="100" y="145" font-family="Arial" font-size="18" font-weight="bold" fill="#1565c0">接入层</text>
+  
+  <rect x="50" y="260" width="1000" height="130" rx="10" fill="#e8f5e9" fill-opacity="0.5" stroke="#c8e6c9" stroke-width="1"/>
+  <text x="100" y="285" font-family="Arial" font-size="18" font-weight="bold" fill="#2e7d32">协调层</text>
+  
+  <rect x="50" y="400" width="1000" height="160" rx="10" fill="#fff3e0" fill-opacity="0.5" stroke="#ffe0b2" stroke-width="1"/>
+  <text x="100" y="425" font-family="Arial" font-size="18" font-weight="bold" fill="#e65100">服务层</text>
+  
+  <rect x="50" y="570" width="1000" height="130" rx="10" fill="#f3e5f5" fill-opacity="0.5" stroke="#e1bee7" stroke-width="1"/>
+  <text x="100" y="595" font-family="Arial" font-size="18" font-weight="bold" fill="#6a1b9a">索引层</text>
+  
+  <rect x="50" y="710" width="1000" height="70" rx="10" fill="#e0f7fa" fill-opacity="0.5" stroke="#b2ebf2" stroke-width="1"/>
+  <text x="100" y="745" font-family="Arial" font-size="18" font-weight="bold" fill="#00838f">存储层</text>
+  
+  <!-- 客户端 -->
+  <rect x="250" y="155" width="180" height="65" rx="8" fill="#e1f5fe" stroke="#0288d1" stroke-width="2" filter="url(#shadow)"/>
+  <text x="340" y="190" font-family="Arial" font-size="18" text-anchor="middle" fill="#01579b">Web 客户端</text>
+  <text x="340" y="210" font-family="Arial" font-size="14" text-anchor="middle" fill="#0277bd">(HTML/JS/CSS)</text>
+  
+  <rect x="650" y="155" width="180" height="65" rx="8" fill="#e1f5fe" stroke="#0288d1" stroke-width="2" filter="url(#shadow)"/>
+  <text x="740" y="190" font-family="Arial" font-size="18" text-anchor="middle" fill="#01579b">移动客户端</text>
+  <text x="740" y="210" font-family="Arial" font-size="14" text-anchor="middle" fill="#0277bd">(iOS/Android)</text>
+  
+  <!-- 服务器 -->
+  <rect x="450" y="290" width="200" height="65" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="550" y="320" font-family="Arial" font-size="18" text-anchor="middle" fill="#1b5e20">HTTP 服务器</text>
+  <text x="550" y="340" font-family="Arial" font-size="14" text-anchor="middle" fill="#2e7d32">(RESTful API)</text>
+  
+  <!-- 连接线 -->
+  <line x1="340" y1="220" x2="450" y2="290" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="740" y1="220" x2="650" y2="290" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- 哨兵 -->
+  <rect x="300" y="440" width="180" height="65" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2" filter="url(#shadow)"/>
+  <text x="390" y="470" font-family="Arial" font-size="18" text-anchor="middle" fill="#e65100">Sentinel (哨兵)</text>
+  <text x="390" y="490" font-family="Arial" font-size="14" text-anchor="middle" fill="#ef6c00">(请求分发与负载均衡)</text>
+  
+  <!-- ETCD 服务注册中心 -->
+  <rect x="620" y="440" width="180" height="65" rx="8" fill="#e0f7fa" stroke="#00acc1" stroke-width="2" filter="url(#shadow)"/>
+  <text x="710" y="470" font-family="Arial" font-size="18" text-anchor="middle" fill="#006064">etcd 服务注册中心</text>
+  <text x="710" y="490" font-family="Arial" font-size="14" text-anchor="middle" fill="#00838f">(服务发现与健康检查)</text>
+  
+  <!-- 连接线 -->
+  <line x1="550" y1="355" x2="390" y2="440" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="480" y1="470" x2="620" y2="470" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- 工作节点 -->
+  <rect x="200" y="610" width="160" height="65" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+  <text x="280" y="635" font-family="Arial" font-size="18" text-anchor="middle" fill="#4a148c">Worker 节点 1</text>
+  <text x="280" y="655" font-family="Arial" font-size="14" text-anchor="middle" fill="#6a1b9a">(gRPC服务)</text>
+  
+  <rect x="450" y="610" width="160" height="65" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+  <text x="530" y="635" font-family="Arial" font-size="18" text-anchor="middle" fill="#4a148c">Worker 节点 2</text>
+  <text x="530" y="655" font-family="Arial" font-size="14" text-anchor="middle" fill="#6a1b9a">(gRPC服务)</text>
+  
+  <rect x="700" y="610" width="160" height="65" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+  <text x="780" y="635" font-family="Arial" font-size="18" text-anchor="middle" fill="#4a148c">Worker 节点 3</text>
+  <text x="780" y="655" font-family="Arial" font-size="14" text-anchor="middle" fill="#6a1b9a">(gRPC服务)</text>
+  
+  <!-- 连接线 -->
+  <line x1="390" y1="505" x2="280" y2="610" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="390" y1="505" x2="530" y2="610" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="390" y1="505" x2="780" y2="610" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- 工作节点到ETCD的连接 -->
+  <line x1="280" y1="610" x2="710" y2="505" stroke="#777" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#dashed-arrow)"/>
+  <line x1="530" y1="610" x2="710" y2="505" stroke="#777" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#dashed-arrow)"/>
+  <line x1="780" y1="610" x2="710" y2="505" stroke="#777" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#dashed-arrow)"/>
+  
+  <!-- 存储层 -->
+  <rect x="200" y="710" width="200" height="65" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="300" y="740" font-family="Arial" font-size="18" text-anchor="middle" fill="#880e4f">正排索引</text>
+  <text x="300" y="760" font-family="Arial" font-size="14" text-anchor="middle" fill="#ad1457">(KV存储: Bolt/Badger)</text>
+  
+  <rect x="450" y="710" width="200" height="65" rx="8" fill="#fff8e1" stroke="#ffa000" stroke-width="2" filter="url(#shadow)"/>
+  <text x="550" y="740" font-family="Arial" font-size="18" text-anchor="middle" fill="#ff6f00">倒排索引</text>
+  <text x="550" y="760" font-family="Arial" font-size="14" text-anchor="middle" fill="#ff8f00">(跳表实现)</text>
+  
+  <rect x="700" y="710" width="200" height="65" rx="8" fill="#e8eaf6" stroke="#3949ab" stroke-width="2" filter="url(#shadow)"/>
+  <text x="800" y="740" font-family="Arial" font-size="18" text-anchor="middle" fill="#1a237e">位图索引</text>
+  <text x="800" y="760" font-family="Arial" font-size="14" text-anchor="middle" fill="#283593">(高效过滤)</text>
+  
+  <!-- 连接线 -->
+  <line x1="280" y1="675" x2="300" y2="710" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="530" y1="675" x2="550" y2="710" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="780" y1="675" x2="800" y2="710" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- 底部信息区域背景 -->
+  <rect x="50" y="800" width="1000" height="120" rx="10" fill="#f5f5f5" fill-opacity="0.8" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- 图例 -->
+  <rect x="80" y="815" width="250" height="90" rx="5" fill="white" stroke="#bbdefb" stroke-width="1" filter="url(#shadow)"/>
+  <text x="205" y="835" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold" fill="#1565c0">图例</text>
+  
+  <line x1="100" y1="850" x2="130" y2="850" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="140" y="855" font-family="Arial" font-size="14" text-anchor="start" fill="#333">RPC调用</text>
+  
+  <line x1="100" y1="880" x2="130" y2="880" stroke="#777" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#dashed-arrow)"/>
+  <text x="140" y="885" font-family="Arial" font-size="14" text-anchor="start" fill="#333">服务注册</text>
+  
+  <!-- 核心功能 -->
+  <rect x="350" y="815" width="330" height="90" rx="5" fill="#f0f7f0" stroke="#c8e6c9" stroke-width="1" filter="url(#shadow)"/>
+  <text x="515" y="835" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold" fill="#2e7d32">核心功能</text>
+  
+  <text x="370" y="860" font-family="Arial" font-size="14" text-anchor="start" fill="#333">分布式索引</text>
+  <text x="370" y="885" font-family="Arial" font-size="14" text-anchor="start" fill="#333">高效查询 • 负载均衡 • 服务发现 • 容错机制</text>
+  
+  <!-- 技术特点 -->
+  <rect x="700" y="815" width="320" height="90" rx="5" fill="#fff8f0" stroke="#ffe0b2" stroke-width="1" filter="url(#shadow)"/>
+  <text x="860" y="835" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold" fill="#e65100">技术特点</text>
+  
+  <text x="720" y="860" font-family="Arial" font-size="14" text-anchor="start" fill="#333">高并发设计</text>
+  <text x="720" y="885" font-family="Arial" font-size="14" text-anchor="start" fill="#333">自定义并发Map • 位图过滤 • 跳表索引</text>
+</svg>
